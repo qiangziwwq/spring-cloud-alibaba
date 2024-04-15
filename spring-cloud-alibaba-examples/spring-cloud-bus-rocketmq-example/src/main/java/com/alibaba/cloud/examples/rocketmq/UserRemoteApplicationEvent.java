@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2018 the original author or authors.
+ * Copyright 2013-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,7 +33,7 @@ public class UserRemoteApplicationEvent extends RemoteApplicationEvent {
 
 	public UserRemoteApplicationEvent(Object source, User user, String originService,
 			String destinationService) {
-		super(source, originService, destinationService);
+		super(source, originService, DEFAULT_DESTINATION_FACTORY.getDestination(originService));
 		this.user = user;
 	}
 

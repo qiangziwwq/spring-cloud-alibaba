@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.alibaba.cloud</groupId>
         <artifactId>spring-cloud-alibaba</artifactId>
-        <version>2.2.1.BUILD-SNAPSHOT</version>
+        <version>${revision}</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -18,35 +18,43 @@
 
     <modules>
         <module>sentinel-example/sentinel-core-example</module>
-        <module>sentinel-example/sentinel-dubbo-example/sentinel-dubbo-provider-example</module>
-        <module>sentinel-example/sentinel-dubbo-example/sentinel-dubbo-consumer-example</module>
-        <module>sentinel-example/sentinel-dubbo-example/sentinel-dubbo-api</module>
-        <module>sentinel-example/sentinel-feign-example/sentinel-feign-consumer-example</module>
-        <module>sentinel-example/sentinel-feign-example/sentinel-feign-provider-example</module>
+        <module>sentinel-example/sentinel-openfeign-example</module>
+        <module>sentinel-example/sentinel-resttemplate-example</module>
+        <module>sentinel-example/sentinel-circuitbreaker-example</module>
         <module>sentinel-example/sentinel-webflux-example</module>
         <module>sentinel-example/sentinel-spring-cloud-gateway-example</module>
-        <module>sentinel-example/sentinel-zuul-example</module>
         <module>nacos-example/nacos-discovery-example</module>
         <module>nacos-example/nacos-config-example</module>
         <module>nacos-example/nacos-gateway-example</module>
-        <module>oss-example</module>
-        <module>ans-example/ans-consumer-feign-example</module>
-        <module>ans-example/ans-consumer-ribbon-example</module>
-        <module>ans-example/ans-provider-example</module>
         <module>seata-example/business-service</module>
         <module>seata-example/order-service</module>
         <module>seata-example/storage-service</module>
         <module>seata-example/account-service</module>
-        <module>acm-example/acm-local-example</module>
-        <module>rocketmq-example/rocketmq-consume-example</module>
-        <module>rocketmq-example/rocketmq-produce-example</module>
-        <module>sms-example</module>
+        <module>rocketmq-example/rocketmq-comprehensive-example</module>
+        <module>rocketmq-example/rocketmq-orderly-consume-example</module>
+        <module>rocketmq-example/rocketmq-broadcast-example/rocketmq-broadcast-producer-example</module>
+        <module>rocketmq-example/rocketmq-broadcast-example/rocketmq-broadcast-consumer1-example</module>
+        <module>rocketmq-example/rocketmq-broadcast-example/rocketmq-broadcast-consumer2-example</module>
+        <module>rocketmq-example/rocketmq-delay-consume-example</module>
+        <module>rocketmq-example/rocketmq-sql-consume-example</module>
+        <module>rocketmq-example/rocketmq-example-common</module>
+        <module>rocketmq-example/rocketmq-tx-example</module>
+        <module>rocketmq-example/rocketmq-pollable-consume-example</module>
+
         <module>spring-cloud-bus-rocketmq-example</module>
-        <module>schedulerx-example/schedulerx-simple-task-example</module>
-        <module>spring-cloud-alibaba-dubbo-examples</module>
         <module>spring-cloud-alibaba-sidecar-examples/spring-cloud-alibaba-sidecar-nacos-example</module>
         <module>spring-cloud-alibaba-sidecar-examples/spring-cloud-alibaba-sidecar-consul-example</module>
-    </modules>
+        <module>integrated-example/integrated-storage</module>
+        <module>integrated-example/integrated-account</module>
+        <module>integrated-example/integrated-order</module>
+        <module>integrated-example/integrated-gateway</module>
+        <module>integrated-example/integrated-praise-provider</module>
+        <module>integrated-example/integrated-praise-consumer</module>
+        <module>integrated-example/integrated-common</module>
+		<module>integrated-example/integrated-frontend</module>
+		<module>spring-cloud-ai-example</module>
+	</modules>
+
 
     <build>
         <plugins>
@@ -58,8 +66,84 @@
                     <skip>true</skip>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.graalvm.buildtools</groupId>
+                <artifactId>native-maven-plugin</artifactId>
+                <version>${native-maven-plugin.version}</version>
+            </plugin>
+
+            <!--Exclude javadoc jars-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+
+            <!--Exclude sources jars-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <configuration>
+                    <skipSource>true</skipSource>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
+    <profiles>
+        <profile>
+            <id>native</id>
+            <build>
+                <pluginManagement>
+                    <plugins>
+                        <plugin>
+                            <groupId>org.springframework.boot</groupId>
+                            <artifactId>spring-boot-maven-plugin</artifactId>
+                            <configuration>
+                                <jvmArguments>
+                                    -agentlib:native-image-agent=config-merge-dir=src/main/resources/META-INF/native-image/
+                                </jvmArguments>
+                                <image>
+                                    <builder>paketobuildpacks/builder:tiny</builder>
+                                    <env>
+                                        <BP_NATIVE_IMAGE>true</BP_NATIVE_IMAGE>
+                                    </env>
+                                </image>
+                            </configuration>
+                            <executions>
+                                <execution>
+                                    <id>process-aot</id>
+                                    <goals>
+                                        <goal>process-aot</goal>
+                                    </goals>
+                                </execution>
+                            </executions>
+                        </plugin>
+                        <plugin>
+                            <groupId>org.graalvm.buildtools</groupId>
+                            <artifactId>native-maven-plugin</artifactId>
+                            <configuration>
+                                <classesDirectory>${project.build.outputDirectory}</classesDirectory>
+                                <metadataRepository>
+                                    <enabled>true</enabled>
+                                </metadataRepository>
+                                <requiredVersion>22.3</requiredVersion>
+                            </configuration>
+                            <executions>
+                                <execution>
+                                    <id>add-reachability-metadata</id>
+                                    <goals>
+                                        <goal>add-reachability-metadata</goal>
+                                    </goals>
+                                </execution>
+                            </executions>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
+            </build>
+        </profile>
+    </profiles>
 
 </project>
