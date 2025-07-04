@@ -49,7 +49,7 @@ CREATE TABLE `undo_log` (
 ```
 
 #### 导入 seata-server db 模式所需要的数据库表
-在数据库中初始化[global_table、branch_table、lock_table、distributed_lock](https://github.com/seata/seata/blob/2.0.0/script/server/db/mysql.sql)
+在数据库中初始化[global_table、branch_table、lock_table、distributed_lock](https://github.com/seata/seata/blob/2.1.0/script/server/db/mysql.sql)
 
 ```sql
 -- -------------------------------- The script used when storeMode is 'db' --------------------------------
@@ -164,7 +164,7 @@ CREATE TABLE `account_tbl` (
 
 > Spring Cloud Alibaba 适配了 Nacos 2.2.3 版本，在本示例中，使用 Nacos 2.2.3 作为 Seata 的配置中心组件。
 
-创建 Seata 的 Nacos 配置： data-id: `seata.properties` , Group: `SEATA_GROUP` (seata 2.0.0 默认分组) ,导入 [Seata Config](https://github.com/seata/seata/blob/2.0.0/script/config-center/config.txt)
+创建 Seata 的 Nacos 配置： data-id: `seata.properties` , Group: `SEATA_GROUP` (seata 2.1.0 默认分组) ,导入 [Seata Config](https://github.com/seata/seata/blob/2.1.0/script/config-center/config.txt)
 
 在 `seata.properties` 配置文件中增加应用示例中需要的以下配置项：[事务群组配置](https://seata.io/zh-cn/docs/user/configurations.html)
 
@@ -181,11 +181,11 @@ CREATE TABLE `account_tbl` (
 
 #### 1. 下载
 
-点击下载 [Seata 2.0.0](https://github.com/seata/seata/releases/download/v2.0.0/seata-server-2.0.0.zip) 版本。
+点击下载 [Seata 2.1.0](https://github.com/seata/seata/releases/download/v2.1.0/seata-server-2.1.0.zip) 版本。
 
 #### 2. 配置 Seata-server
 
-修改 `seata-server-2.0.0\conf\application.yml` 配置文件中的以下配置项：
+修改 `seata-server-2.1.0\conf\application.yml` 配置文件中的以下配置项：
 
 - 注释 `group: SEATA_GROUP`
 - 添加 Nacos 用户名和密码
@@ -202,7 +202,7 @@ seata:
       username: nacos
       password: nacos
       context-path:
-      data-id: seataServer.properties
+      data-id: seata.properties
       ##if use MSE Nacos with auth, mutex with username/password attribute
       #access-key:
       #secret-key:
@@ -220,7 +220,7 @@ seata:
 ```
 
 > **注意：**
-> Nacos 2.3.2 开启鉴权，需要配置 `username` 和 `password` 属性，否则登陆失败。更多 Nacos 2.3.2 版本相关配置，参考 `nacos-example`。
+> Nacos 2.4.2 开启鉴权，需要配置 `username` 和 `password` 属性，否则登陆失败。更多 Nacos 2.4.2 版本相关配置，参考 `nacos-example`。
 > **Seata-server 启动时的 Nacos 服务注册分组需要和示例应用中的分组保持一致，否则出现无法找到 seata-server 的错误！**
 > 更多 Seata-server 以 Nacos 作为配置中心的配置请参考：https://seata.io/zh-cn/docs/ops/deploy-by-docker-compose/#nacos-db
 

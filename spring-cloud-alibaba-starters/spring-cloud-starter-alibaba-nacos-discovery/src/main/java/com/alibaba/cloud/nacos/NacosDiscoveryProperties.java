@@ -28,14 +28,13 @@ import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
+import com.alibaba.cloud.commons.context.support.PropertySourcesUtils;
 import com.alibaba.cloud.commons.lang.StringUtils;
 import com.alibaba.cloud.nacos.event.NacosDiscoveryInfoChangedEvent;
 import com.alibaba.cloud.nacos.util.InetIPv6Utils;
 import com.alibaba.nacos.api.naming.NamingService;
 import com.alibaba.nacos.api.naming.PreservedMetadataKeys;
 import com.alibaba.nacos.client.naming.utils.UtilAndComs;
-import com.alibaba.spring.util.PropertySourcesUtils;
 import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,7 +48,6 @@ import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.Environment;
 
 import static com.alibaba.nacos.api.PropertyKeyConst.ACCESS_KEY;
-import static com.alibaba.nacos.api.PropertyKeyConst.CLUSTER_NAME;
 import static com.alibaba.nacos.api.PropertyKeyConst.ENDPOINT;
 import static com.alibaba.nacos.api.PropertyKeyConst.ENDPOINT_PORT;
 import static com.alibaba.nacos.api.PropertyKeyConst.NAMESPACE;
@@ -70,14 +68,12 @@ import static com.alibaba.nacos.api.PropertyKeyConst.USERNAME;
 @ConfigurationProperties("spring.cloud.nacos.discovery")
 public class NacosDiscoveryProperties {
 
-	private static final Logger log = LoggerFactory
-			.getLogger(NacosDiscoveryProperties.class);
-
 	/**
 	 * Prefix of {@link NacosDiscoveryProperties}.
 	 */
 	public static final String PREFIX = "spring.cloud.nacos.discovery";
-
+	private static final Logger log = LoggerFactory
+			.getLogger(NacosDiscoveryProperties.class);
 	private static final Pattern PATTERN = Pattern.compile("-(\\w)");
 
 	private static final String IPV4 = "IPv4";
@@ -134,7 +130,7 @@ public class NacosDiscoveryProperties {
 	/**
 	 * cluster name for nacos .
 	 */
-	private String clusterName = "DEFAULT";
+	private String clusterName;
 
 	/**
 	 * group name for nacos.
@@ -232,6 +228,13 @@ public class NacosDiscoveryProperties {
 	 * (defaults to true).
 	 */
 	private boolean failFast = true;
+
+	/**
+	 * graceful shutdown wait time. Time unit: millisecond.
+	 * default is 10s
+	 * When the Springboot shutdown hook is executed, remove the Nacos service, wait for 10 seconds, and then Tomcat rejects the request
+	 */
+	private Integer gracefulShutdownWaitTime = 10 * 1000;
 
 	@Autowired
 	private InetIPv6Utils inetIPv6Utils;
@@ -562,6 +565,14 @@ public class NacosDiscoveryProperties {
 		this.failFast = failFast;
 	}
 
+	public Integer getGracefulShutdownWaitTime() {
+		return gracefulShutdownWaitTime;
+	}
+
+	public void setGracefulShutdownWaitTime(Integer gracefulShutdownWaitTime) {
+		this.gracefulShutdownWaitTime = gracefulShutdownWaitTime;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) {
@@ -692,7 +703,8 @@ public class NacosDiscoveryProperties {
 
 		properties.put(ACCESS_KEY, accessKey);
 		properties.put(SECRET_KEY, secretKey);
-		properties.put(CLUSTER_NAME, clusterName);
+		// only used for instance.setClusterName()
+//		properties.put(CLUSTER_NAME, clusterName);
 		properties.put(NAMING_LOAD_CACHE_AT_START, namingLoadCacheAtStart);
 
 		enrichNacosDiscoveryProperties(properties);

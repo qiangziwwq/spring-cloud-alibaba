@@ -33,7 +33,7 @@ import org.springframework.messaging.converter.CompositeMessageConverter;
 @Configuration(proxyBeanMethods = false)
 public class RocketMQBusAutoConfiguration {
 	/**
-	 * isse: https://github.com/alibaba/spring-cloud-alibaba/issues/2742
+	 * issue: https://github.com/alibaba/spring-cloud-alibaba/issues/2742
 	 * if you want to customize a bean, please use this BeanName {@code RocketMQMessageConverter.DEFAULT_NAME}.
 	 */
 	@Bean(RocketMQMessageConverter.DEFAULT_NAME)

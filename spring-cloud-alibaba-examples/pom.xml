@@ -40,7 +40,6 @@
         <module>rocketmq-example/rocketmq-example-common</module>
         <module>rocketmq-example/rocketmq-tx-example</module>
         <module>rocketmq-example/rocketmq-pollable-consume-example</module>
-
         <module>spring-cloud-bus-rocketmq-example</module>
         <module>spring-cloud-alibaba-sidecar-examples/spring-cloud-alibaba-sidecar-nacos-example</module>
         <module>spring-cloud-alibaba-sidecar-examples/spring-cloud-alibaba-sidecar-consul-example</module>
@@ -52,8 +51,8 @@
         <module>integrated-example/integrated-praise-consumer</module>
         <module>integrated-example/integrated-common</module>
 		<module>integrated-example/integrated-frontend</module>
-		<module>spring-cloud-ai-example</module>
-	</modules>
+        <module>spring-cloud-scheduling-example</module>
+    </modules>
 
 
     <build>

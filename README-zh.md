@@ -14,7 +14,7 @@ Spring Cloud Alibaba 致力于提供微服务开发的一站式解决方案。�
 
 参考文档 请查看 [WIKI](https://github.com/alibaba/spring-cloud-alibaba/wiki) 。
 
-为 Spring Cloud Alibaba 贡献代码请参考 [如何贡献](https://sca.aliyun.com/zh-cn/community/developer/contributor-guide/new-contributor-guide_dev/) 。
+为 Spring Cloud Alibaba 贡献代码请参考 [如何贡献](https://sca.aliyun.com/docs/developer/contributor-guide/new-contributor-guide_dev/) 。
 
 ## 主要功能
 
@@ -77,7 +77,7 @@ Spring Cloud 使用 Maven 来构建，最快的使用方式是将本项目 clone
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-alibaba-dependencies</artifactId>
-            <version>2023.0.0.1-RC2</version>
+            <version>2023.0.1.0</version>
             <type>pom</type>
             <scope>import</scope>
         </dependency>

@@ -6,26 +6,26 @@
 
 [Nacos](https://github.com/alibaba/Nacos) 是阿里巴巴开源的一个更易于构建云原生应用的动态服务发现、配置管理和服务管理平台。
 
-## 正确配置并启动 Nacos Server 2.3.2
+## 正确配置并启动 Nacos Server 2.4.2
 
-在 Nacos 2.3.2 中，加入了用户鉴权相关的功能，在首次启动 Nacos Server 时，需要正确配置，避免出现启动失败的问题。
+在 Nacos 2.4.2 中，加入了用户鉴权相关的功能，在首次启动 Nacos Server 时，需要正确配置，避免出现启动失败的问题。
 
 ### 下载 Nacos Server
 
-> 本示例中使用 Nacos Server 版本为 2.3.2！
+> 本示例中使用 Nacos Server 版本为 2.4.2！
 
-Nacos 支持直接下载和源码构建两种方式。**推荐在 Spring Cloud Alibaba 2023.x 中使用 Nacos Server 2.3.2 版本。**
+Nacos 支持直接下载和源码构建两种方式。**推荐在 Spring Cloud Alibaba 2023.x 中使用 Nacos Server 2.4.2 版本。**
 
 1. 直接下载：[Nacos Server 下载页](https://github.com/alibaba/nacos/releases)
 2. 源码构建：进入 Nacos [Github 项目页面](https://github.com/alibaba/nacos)，将代码 git clone 到本地自行编译打包，[参考文档](https://nacos.io/zh-cn/docs/quick-start.html)。
 
 ### 配置 Nacos Server
 
-打开 `\nacos-server-2.3.2\conf\application.properties` 配置文件，修改以下配置项：
+打开 `\nacos-server-2.4.2\conf\application.properties` 配置文件，修改以下配置项：
 
 #### 配置数据源
 
-此处以 MySQL 数据库为例，使用 `nacos-server-2.3.2\conf\mysql-schema.sql` 初始化数据库表文件。同时修改以下配置
+此处以 MySQL 数据库为例，使用 `nacos-server-2.4.2\conf\mysql-schema.sql` 初始化数据库表文件。同时修改以下配置
 
 ```properties
 #*************** Config Module Related Configurations ***************#
@@ -49,7 +49,7 @@ db.pool.config.minimumIdle=2
 
 #### 开启鉴权
 
-**注意：不开启在 2.3.2 中会出现登陆失败异常！**
+**注意：不开启在 2.4.2 中会出现登陆失败异常！**
 
 ```properties
 ### The auth system to use, currently only 'nacos' and 'ldap' is supported:
@@ -77,7 +77,7 @@ nacos.core.auth.plugin.nacos.token.secret.key=SecretKey0123456789012345678901234
 
 #### Open API 鉴权
 
-在 nacos server 2.3.2 中使用 Open api 接口时需要鉴权：更多细节请参考：[Nacos api 鉴权](https://nacos.io/zh-cn/docs/auth.html)
+在 nacos server 2.4.2 中使用 Open api 接口时需要鉴权：更多细节请参考：[Nacos api 鉴权](https://nacos.io/zh-cn/docs/auth.html)
 
 1. 获取 accessToken：使用用户名和密码登陆 nacos server：
 
@@ -444,24 +444,15 @@ spring.cloud.nacos.discovery.ip-type=IPv6
 
 4. 配置必要的配置，在 nacos-discovery-consumer-example 项目的 `/src/main/resources/application.properties` 中添加基本配置信息
 
-   ```java
-   @RestController
-   public class TestController {
-   
-       @Autowired
-       private RestTemplate restTemplate;
-       @Autowired
-       private EchoService echoService;
-   
-       @GetMapping(value = "/echo-rest/{str}")
-       public String rest(@PathVariable String str) {
-           return restTemplate.getForObject("http://service-provider/echo/" + str, String.class);
-       }
-       @GetMapping(value = "/echo-feign/{str}")
-       public String feign(@PathVariable String str) {
-           return echoService.echo(str);
-       }
-   }
+   ```properties
+	spring.application.name=service-consumer
+	server.port=18083
+	management.endpoints.web.exposure.include=*
+	spring.cloud.nacos.discovery.server-addr=127.0.0.1:8848
+	spring.cloud.nacos.discovery.fail-fast=true
+	
+	spring.cloud.nacos.username=nacos
+	spring.cloud.nacos.password=nacos
    ```
 
 5.启动应用，支持 IDE 直接启动和编译打包后启动。
@@ -471,11 +462,11 @@ spring.cloud.nacos.discovery.ip-type=IPv6
 
 #### 验证
 
-1. 在浏览器地址栏中输入 http://127.0.0.1:18083/echo-rest/1234，点击跳转，可以看到浏览器显示了 nacos-discovery-provider-example 返回的消息 "hello Nacos Discovery 1234"，证明服务发现生效。
+1. 在浏览器地址栏中输入 [http://127.0.0.1:18083/echo-rest/1234](http://127.0.0.1:18083/echo-rest/1234)，点击跳转，可以看到浏览器显示了 nacos-discovery-provider-example 返回的消息 "hello Nacos Discovery 1234"，证明服务发现生效。
 
 ![rest](https://cdn.nlark.com/lark/0/2018/png/54319/1536986302124-ee27670d-bdcc-4210-9f5d-875acec6d3ea.png)
 
-2. 在浏览器地址栏中输入 http://127.0.0.1:18083/echo-feign/12345，点击跳转，可以看到浏览器显示 nacos-discovery-provider-example 返回的消息 "hello Nacos Discovery 12345"，证明服务发现生效。
+2. 在浏览器地址栏中输入 [http://127.0.0.1:18083/echo-feign/12345](http://127.0.0.1:18083/echo-feign/12345)，点击跳转，可以看到浏览器显示 nacos-discovery-provider-example 返回的消息 "hello Nacos Discovery 12345"，证明服务发现生效。
 
 ![feign](https://cdn.nlark.com/lark/0/2018/png/54319/1536986311685-6d0c1f9b-a453-4ec3-88ab-f7922d210f65.png)
 

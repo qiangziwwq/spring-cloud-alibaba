@@ -8,7 +8,7 @@
 
 A project maintained by Alibaba.
 
-See the [中文文档](https://github.com/alibaba/spring-cloud-alibaba/blob/2022.x/README-zh.md) for Chinese readme.
+See the [中文文档](https://github.com/alibaba/spring-cloud-alibaba/blob/2023.x/README-zh.md) for Chinese readme.
 
 Spring Cloud Alibaba provides a one-stop solution for distributed application development. It contains all the components required to develop distributed applications, making it easy for you to develop your applications using Spring Cloud.
 
@@ -75,7 +75,7 @@ These artifacts are available from Maven Central and Spring Release repository v
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-alibaba-dependencies</artifactId>
-            <version>2023.0.0.1-RC2</version>
+            <version>2023.0.1.0</version>
             <type>pom</type>
             <scope>import</scope>
         </dependency>

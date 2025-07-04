@@ -16,9 +16,6 @@
 
 package com.alibaba.cloud.seata.feign;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
 import io.seata.core.context.RootContext;
@@ -37,8 +34,6 @@ public class SeataFeignRequestInterceptor implements RequestInterceptor {
 			return;
 		}
 
-		List<String> seataXid = new ArrayList<>();
-		seataXid.add(xid);
 		template.header(RootContext.KEY_XID, xid);
 	}
 }

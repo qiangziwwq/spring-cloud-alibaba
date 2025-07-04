@@ -6,9 +6,9 @@ This project demonstrates how to use Spring Cloud Alibaba Nacos related Starters
 
 [Nacos](https://github.com/alibaba/Nacos) It is Alibaba's open source dynamic service discovery, configuration management and service management platform that is easier to build cloud-native applications.
 
-## Nacos Server 2.3.2 is properly configured and started
+## Nacos Server 2.4.2 is properly configured and started
 
-In Nacos 2.3.2, functions related to user authentication are added. When starting Nacos Server for the first time, it needs to be configured correctly to avoid the problem of startup failure.
+In Nacos 2.4.2, functions related to user authentication are added. When starting Nacos Server for the first time, it needs to be configured correctly to avoid the problem of startup failure.
 
 ### Download Nacos Server
 
@@ -49,7 +49,7 @@ db.pool.config.minimumIdle=2
 
 #### Turn on authentication
 
-**Note: If it is not enabled, login failure exception will occur in 2.3.2!**
+**Note: If it is not enabled, login failure exception will occur in 2.4.2!**
 
 ```properties
 ### The auth system to use, currently only 'nacos' and 'ldap' is supported:
@@ -77,7 +77,7 @@ nacos.core.auth.plugin.nacos.token.secret.key=SecretKey0123456789012345678901234
 
 #### Open API authentication
 
-Authentication is required when using the Open api interface in nacos server 2.3.2: For more details, please refer to: [Nacos api authentication](https://nacos.io/zh-cn/docs/auth.html)
+Authentication is required when using the Open api interface in nacos server 2.4.2: For more details, please refer to: [Nacos api authentication](https://nacos.io/zh-cn/docs/auth.html)
 
 1. Obtain accessToken: Use username and password to log in to the nacos server:
 
@@ -463,11 +463,11 @@ Here's a look at the code for the nacos-discovery-consumer-example project to sh
 
 #### Validate
 
-1. Enter http://127.0.0.1:18083/echo-rest/1234，点击跳转，可以看到浏览器显示了  the message "hello Nacos Discovery 1234" returned by nacos-discovery-provider-example in the browser address bar to prove that the service discovery is valid.
+1. Enter [http://127.0.0.1:18083/echo-rest/1234](http://127.0.0.1:18083/echo-rest/1234) and click Go, you can see that the message "hello Nacos Discovery 1234" returned by nacos-discovery-provider-example in the browser address bar to prove that the service discovery is valid.
 
 ![rest](https://cdn.nlark.com/lark/0/2018/png/54319/1536986302124-ee27670d-bdcc-4210-9f5d-875acec6d3ea.png)
 
-2. Enter http://127.0.0.1:18083/echo-feign/12345，点击跳转，可以看到浏览器显示  the message "hello Nacos Discovery 12345" returned by nacos-discovery-provider-example in the browser address bar to prove that the service discovery is effective.
+2. Enter [http://127.0.0.1:18083/echo-feign/12345](http://127.0.0.1:18083/echo-feign/12345) and click Go, you can see that the message "hello Nacos Discovery 12345" returned by nacos-discovery-provider-example in the browser address bar to prove that the service discovery is effective.
 
 ![feign](https://cdn.nlark.com/lark/0/2018/png/54319/1536986311685-6d0c1f9b-a453-4ec3-88ab-f7922d210f65.png)
 

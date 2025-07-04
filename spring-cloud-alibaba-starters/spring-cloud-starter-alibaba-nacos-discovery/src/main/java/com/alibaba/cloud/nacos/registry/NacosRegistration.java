@@ -24,6 +24,7 @@ import com.alibaba.cloud.nacos.NacosDiscoveryProperties;
 import com.alibaba.nacos.api.naming.PreservedMetadataKeys;
 import jakarta.annotation.PostConstruct;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.cloud.client.DefaultServiceInstance;
 import org.springframework.cloud.client.discovery.ManagementServerPortUtils;
 import org.springframework.cloud.client.serviceregistry.Registration;
@@ -172,8 +173,12 @@ public class NacosRegistration implements Registration {
 
 	@Override
 	public String toString() {
+		NacosDiscoveryProperties safeProp = new NacosDiscoveryProperties();
+		BeanUtils.copyProperties(nacosDiscoveryProperties, safeProp);
+		safeProp.setUsername("******");
+		safeProp.setPassword("******");
 		return "NacosRegistration{" + "nacosDiscoveryProperties="
-				+ nacosDiscoveryProperties + '}';
+				+ safeProp + '}';
 	}
 
 }

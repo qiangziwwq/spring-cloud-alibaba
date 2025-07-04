@@ -1,0 +1,12 @@
+[
+  {
+    "resource": "test",
+    "resourceMode": 0,
+    "grade": 1,
+    "count": 1,
+    "intervalSec": 1,
+    "controlBehavior": 1,
+    "burst": 1,
+    "maxQueueingTimeoutMs": 100
+  }
+]
